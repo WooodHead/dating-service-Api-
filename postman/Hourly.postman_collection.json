@@ -1,0 +1,3085 @@
+{
+	"info": {
+		"_postman_id": "976d0ce2-059a-4236-b7ac-b8c7f923f5e3",
+		"name": "Hourly",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Signup Local",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201,202]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Zain\",\n    \"bio\": \"Bla bla bla, Bla bla bla, Bla bla bla\",\n    \"gender\": \"MALE\",\n    \"birthday\": \"2021-01-01\",\n    \"username\": \"zsajjad932as\",\n    \"email\": \"zsajjadasdf123@gmail.com\",\n    \"phoneNumber\": \"+923343122421\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/auth/signup",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Local",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201,202]);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"max.grafix.cell@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/auth/local",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"auth",
+								"local"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Local Verify",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201,202]);",
+									"});",
+									"",
+									"pm.test(\"Set authorization environment value\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var auth = jsonData.jwtToken;",
+									"    pm.environment.set(\"authorization\", auth);",
+									"    pm.expect(pm.environment.get('authorization')).to.be.equal(auth);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"max.grafix.cell@gmail.com\",\n    \"code\": \"38748\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/auth/local/verify",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"auth",
+								"local",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{authorization}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/auth/logout",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Google",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201,202]);",
+									"});",
+									"",
+									"pm.test(\"Set authorization environment value\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var auth = jsonData.jwtToken;",
+									"    pm.environment.set(\"authorization\", auth);",
+									"    pm.expect(pm.environment.get('authorization')).to.be.equal(auth);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "tokenType",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "accessToken",
+									"value": "ya29.a0ARrdaM-7gpBKIStLHAErjGtO30JEdlZjU6myuXTAckgnY2ei5YeB7kmovOECKgNDqIcme--xaxv0B9EY8olu40NqWHwsoaldUngvxGA3XtImtSxfAWjcyjxOzG-lpBuDssMf90rDHyQdq5beWUHZqN6PTHaIFg",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "{{GOOGLE_CLIENT_ID}}",
+									"type": "string"
+								},
+								{
+									"key": "clientSecret",
+									"value": "{{GOOGLE_CLIENT_SECRET}}",
+									"type": "string"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "{{SERVICE_URL}}/auth/google/callback",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "https://accounts.google.com/o/oauth2/auth",
+									"type": "string"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "useBrowser",
+									"value": false,
+									"type": "boolean"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "https://accounts.google.com/o/oauth2/token",
+									"type": "string"
+								},
+								{
+									"key": "state",
+									"value": "{{csrfToken}}",
+									"type": "string"
+								},
+								{
+									"key": "scope",
+									"value": "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "queryParams",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/auth/google?access_token=ya29.a0ARrdaM_UeHKrmCIc6CunjKcmYT6zN8x8b_OeTyhW9cRUI9k-e-eLLZo6mtOJTWrkvbAoe77vZLGoUkHX5HQuWa8zjiVbtCJun7CY3t76afQJl8UgGDvHh_GPpH4HiSJBTwh19Ce-2Y6tzLVg_nKmBdwdh1ldew\n",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"auth",
+								"google"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "ya29.a0ARrdaM_UeHKrmCIc6CunjKcmYT6zN8x8b_OeTyhW9cRUI9k-e-eLLZo6mtOJTWrkvbAoe77vZLGoUkHX5HQuWa8zjiVbtCJun7CY3t76afQJl8UgGDvHh_GPpH4HiSJBTwh19Ce-2Y6tzLVg_nKmBdwdh1ldew\n"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Facebook",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201,202]);",
+									"});",
+									"",
+									"pm.test(\"Set authorization environment value\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var auth = jsonData.jwtToken;",
+									"    pm.environment.set(\"authorization\", auth);",
+									"    pm.expect(pm.environment.get('authorization')).to.be.equal(auth);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "accessTokenUrl",
+									"value": "https://graph.facebook.com/v12.0/oauth/access_token",
+									"type": "string"
+								},
+								{
+									"key": "scope",
+									"value": "public_profile",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "https://www.facebook.com/v12.0/dialog/oauth",
+									"type": "string"
+								},
+								{
+									"key": "clientSecret",
+									"value": "{{FACEBOOK_APP_SECRET}}",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "{{FACEBOOK_APP_ID}}",
+									"type": "string"
+								},
+								{
+									"key": "useBrowser",
+									"value": true,
+									"type": "boolean"
+								},
+								{
+									"key": "tokenType",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "accessToken",
+									"value": "ya29.a0ARrdaM-7gpBKIStLHAErjGtO30JEdlZjU6myuXTAckgnY2ei5YeB7kmovOECKgNDqIcme--xaxv0B9EY8olu40NqWHwsoaldUngvxGA3XtImtSxfAWjcyjxOzG-lpBuDssMf90rDHyQdq5beWUHZqN6PTHaIFg",
+									"type": "string"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "{{SERVICE_URL}}/auth/google/callback",
+									"type": "string"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "state",
+									"value": "{{csrfToken}}",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "queryParams",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/auth/facebook",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"auth",
+								"facebook"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Phone",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200, 201,202]);",
+									"});",
+									"",
+									"pm.test(\"Set authorization environment value\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var auth = jsonData.jwtToken;",
+									"    pm.environment.set(\"authorization\", auth);",
+									"    pm.expect(pm.environment.get('authorization')).to.be.equal(auth);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/auth/phone?access_token=eyJhbGciOiJSUzI1NiIsImtpZCI6IjM1MDZmMzc1MjI0N2ZjZjk0Y2JlNWQyZDZiNTlmYThhMmJhYjFlYzIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3RvY2stcG9vbC12YyIsImF1ZCI6InN0b2NrLXBvb2wtdmMiLCJhdXRoX3RpbWUiOjE2NDIwMTUwOTcsInVzZXJfaWQiOiJDRWh3TUtub1l3UEhpYXdBVFN6TFhtdTJuam4xIiwic3ViIjoiQ0Vod01Lbm9Zd1BIaWF3QVRTekxYbXUybmpuMSIsImlhdCI6MTY0MjAxNTA5NywiZXhwIjoxNjQyMDE4Njk3LCJwaG9uZV9udW1iZXIiOiIrOTIzMzQzMTIyNDAyIiwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJwaG9uZSI6WyIrOTIzMzQzMTIyNDAyIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGhvbmUifX0.K11loC0vgtxz5PQNn7uRlyTuXxaad_c_ouJIy7Z3jsFkzedvIq2epgqtAVMukqSrVPsN5YdUExLvJ3VVsLQ_uH_OOAogyOGNF9y54Ucd_GQE1lOk32dkxx8heBwue0EZ28itOyK_usVWJFORNr50yFtR_iEZldlR3skDbUb8_HopQubV3qNtCMEBQj7TcIFl2WkH-ZYifaaXS4GZPEQorMb_Y63Wz1s0HBA_G3i36cyZ0zRahV8Rhq8KEkd5VjHTqVIZUbFqSJQv2uWr6r_kYGQlJtTDBFWqvX2P1Lv_o3shdgeGQQpd8Ap2dotlj8S801WL872KwrhanZMI4-yCaw",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"auth",
+								"phone"
+							],
+							"query": [
+								{
+									"key": "access_token",
+									"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjM1MDZmMzc1MjI0N2ZjZjk0Y2JlNWQyZDZiNTlmYThhMmJhYjFlYzIiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3RvY2stcG9vbC12YyIsImF1ZCI6InN0b2NrLXBvb2wtdmMiLCJhdXRoX3RpbWUiOjE2NDIwMTUwOTcsInVzZXJfaWQiOiJDRWh3TUtub1l3UEhpYXdBVFN6TFhtdTJuam4xIiwic3ViIjoiQ0Vod01Lbm9Zd1BIaWF3QVRTekxYbXUybmpuMSIsImlhdCI6MTY0MjAxNTA5NywiZXhwIjoxNjQyMDE4Njk3LCJwaG9uZV9udW1iZXIiOiIrOTIzMzQzMTIyNDAyIiwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJwaG9uZSI6WyIrOTIzMzQzMTIyNDAyIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGhvbmUifX0.K11loC0vgtxz5PQNn7uRlyTuXxaad_c_ouJIy7Z3jsFkzedvIq2epgqtAVMukqSrVPsN5YdUExLvJ3VVsLQ_uH_OOAogyOGNF9y54Ucd_GQE1lOk32dkxx8heBwue0EZ28itOyK_usVWJFORNr50yFtR_iEZldlR3skDbUb8_HopQubV3qNtCMEBQj7TcIFl2WkH-ZYifaaXS4GZPEQorMb_Y63Wz1s0HBA_G3i36cyZ0zRahV8Rhq8KEkd5VjHTqVIZUbFqSJQv2uWr6r_kYGQlJtTDBFWqvX2P1Lv_o3shdgeGQQpd8Ap2dotlj8S801WL872KwrhanZMI4-yCaw"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validate",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"zsajjad93@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/auth/validate",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"auth",
+								"validate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Profile",
+			"item": [
+				{
+					"name": "Read",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/user/profile",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"user",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validate User Name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/user/validate/u/zsajjad",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"user",
+								"validate",
+								"u",
+								"zsajjad"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Avatar Update",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/Users/mohammadzain/Desktop/Pics/WhatsApp Image 2021-07-10 at 2.57.28 PM (1).jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/user/profile/avatar",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"user",
+								"profile",
+								"avatar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"Max\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/user/profile",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"user",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{authorization}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log(pm.environment.get(\"authorization\"));"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "User Interests",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"categoryTagIds\": [208]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/user/interests",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"user",
+								"interests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/user/interests",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"user",
+								"interests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/user/interests/13",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"user",
+								"interests",
+								"13"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{authorization}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "User Notifications",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/notifications?limit=10&offset=0",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"notifications"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mark isRead",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"isRead\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/notifications/1",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"notifications",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/notifications/1",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"notifications",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{authorization}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "User Profile Likes",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/user/ckw6pg88s0006d20mgav6ibrf/profile/likes?limit=10&offset=0",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"user",
+								"ckw6pg88s0006d20mgav6ibrf",
+								"profile",
+								"likes"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Summary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/user/ckw6pg88s0006d20mgav6ibrf/profile/likes/summary?limit=10&offset=0",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"user",
+								"ckw6pg88s0006d20mgav6ibrf",
+								"profile",
+								"likes",
+								"summary"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/notifications/1",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"notifications",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/user/ckw6pg88s0006d20mgav6ibrf/profile/likes",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"user",
+								"ckw6pg88s0006d20mgav6ibrf",
+								"profile",
+								"likes"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{authorization}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "User Location",
+			"item": [
+				{
+					"name": "Log User's Location",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"lat\": 34.05225,\n    \"long\": 118.24396\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/user-locations",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"user-locations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Near By Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/user-locations/nearby?lat=34.0523&long=118.2438&radius=0.02&limit=10&offset=0",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"user-locations",
+								"nearby"
+							],
+							"query": [
+								{
+									"key": "lat",
+									"value": "34.0523"
+								},
+								{
+									"key": "long",
+									"value": "118.2438"
+								},
+								{
+									"key": "radius",
+									"value": "0.02"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{authorization}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "User Devices",
+			"item": [
+				{
+					"name": "Add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"platform\": \"IOS\",\n    \"uuid\": \"CA3ED9F4-F6E1-47D2-B38D-AFFD65AF0333\",\n    \"fcmToken\": \"eXXDJXwwJURngJa5HEB5k9:APA91bE1q_tq3KF1Kl8l2GuHNpAskEDtrvR7M6jk-c5CS0mK9HPkxhiV4EWoWjUjZNrvbxsMtXY-iCIWhlqyTT-CRBbgANiKbl3APiWClV5UpsNI6u26vInbaWWCwlLq8oKoFpvGFAT4123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/user-devices",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"user-devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/user-locations/nearby?lat=34.0523&long=118.2438&radius=0.02&limit=10&offset=0",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"user-locations",
+								"nearby"
+							],
+							"query": [
+								{
+									"key": "lat",
+									"value": "34.0523"
+								},
+								{
+									"key": "long",
+									"value": "118.2438"
+								},
+								{
+									"key": "radius",
+									"value": "0.02"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{authorization}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Friend Requests",
+			"item": [
+				{
+					"name": "Per User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/friend-requests/sent?limit=10&offset=0",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"friend-requests",
+								"sent"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sent",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/friend-requests/sent?limit=10&offset=0",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"friend-requests",
+								"sent"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Received",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/friend-requests/received?limit=10&offset=0",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"friend-requests",
+								"received"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Accept",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"ACCEPTED\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/friend-requests/1",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"friend-requests",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reject",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"REJECTED\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/friend-requests/1",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"friend-requests",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/friend-requests/1",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"friend-requests",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"receiverId\": \"{{USER_ID_MAX}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/friend-requests",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"friend-requests"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{authorization}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Friendships",
+			"item": [
+				{
+					"name": "My Friends",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/friendship?limit=10&offset=0",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"friendship"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Other User's Friends",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/friends/ckw6pg88s0006d20mgav6ibrf?limit=10&offset=0",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"friends",
+								"ckw6pg88s0006d20mgav6ibrf"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"receiverId\": \"{{USER_ID_MAX}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/friends/",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"friends",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{authorization}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Providers",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Meetup\",\n    \"order\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/providers",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"providers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/providers",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"providers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/providers/1",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"providers",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/providers/1",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"providers",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"hikes\",\n    \"name\": \"Hikes & Outdoors\",\n    \"order\": 8\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/categories",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Bulk",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"id\": \"restaurants\",\n        \"name\": \"Restaurants\",\n        \"order\": 0\n    },\n    {\n        \"id\": \"food\",\n        \"name\": \"Food\",\n        \"order\": 1\n    },\n    {\n        \"id\": \"bars\",\n        \"name\": \"Bars\",\n        \"order\": 2\n    },\n    {\n        \"id\": \"clubs\",\n        \"name\": \"Clubs\",\n        \"order\": 3\n    },\n    {\n        \"id\": \"sports\",\n        \"name\": \"Sports\",\n        \"order\": 4\n    },\n    {\n        \"id\": \"concerts\",\n        \"name\": \"Concerts\",\n        \"order\": 5\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/categories/bulk",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"categories",
+								"bulk"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/categories",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"isActive\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/categories/restaurants",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"categories",
+								"restaurants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/categories/restaurants",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"categories",
+								"restaurants"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{authorization}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Categories Tags",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"African\",\n    \"order\": 2,\n    \"categoryId\": \"restaurants\",\n    \"providerId\": 1,\n    \"providerTagId\": \"african\",\n    \"providerTagType\": \"tag\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/category-tags",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"category-tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Bulk",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7na\",\n        \"name\": \"Children's Theatre\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7n1\",\n        \"name\": \"Circus & Specialty Acts\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7nJ\",\n        \"name\": \"Classical\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7vAe1\",\n        \"name\": \"Comedy\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7nE\",\n        \"name\": \"Cultural\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7nI\",\n        \"name\": \"Dance\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7nt\",\n        \"name\": \"Espectaculo\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7nn\",\n        \"name\": \"Fashion\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7nl\",\n        \"name\": \"Fine Art\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7lv\",\n        \"name\": \"Magic & Illusion\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7le\",\n        \"name\": \"Miscellaneous\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7ld\",\n        \"name\": \"Miscellaneous Theatre\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7l7\",\n        \"name\": \"Multimedia\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7lA\",\n        \"name\": \"Music\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7lk\",\n        \"name\": \"Opera\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7l6\",\n        \"name\": \"Performance Art\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7lF\",\n        \"name\": \"Puppetry\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7la\",\n        \"name\": \"Spectacular\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7l1\",\n        \"name\": \"Theatre\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7lJ\",\n        \"name\": \"Variety\"\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/category-tags/bulk",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"category-tags",
+								"bulk"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/category-tags?categoryId=concerts",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"category-tags"
+							],
+							"query": [
+								{
+									"key": "categoryId",
+									"value": "concerts"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Afghani\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/category-tags/1",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"category-tags",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/categories/restaurants",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"categories",
+								"restaurants"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{authorization}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Search",
+			"item": [
+				{
+					"name": "Search",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"limit\": 30,\n    \"offset\": 0,\n    \"latitude\": 40.7639,\n    \"longitude\": -73.98502349853516,\n    \"radius\": 10,\n    \"startDate\": \"2021-11-26T00:00:00Z\",\n    \"endDate\": \"2021-11-28T00:00:00Z\",\n    \"categoryIds\": {\n        \"hiking\": {\n            \"providerReferenceId\": \"hiking\"\n        },\n        \"festivals\": {\n            \"providerReferenceId\": \"festivals\"\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/search",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"search"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{authorization}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Post Attachments",
+			"item": [
+				{
+					"name": "Read",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/attachments/1",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"attachments",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/Users/mohammadzain/Desktop/259648073_2120021248151082_3174514053356383919_n.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/attachments",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"attachments"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{authorization}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"Private\",\n    \"privacyLevel\": \"PRIVATE\",\n    \"attachmentIds\": [2],\n    \"isPublished\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/posts",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/posts?userId=ckw6pg88s0006d20mgav6ibrf",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"posts"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "ckw6pg88s0006d20mgav6ibrf"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"isPublished\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/posts/1",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/posts/1",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{authorization}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Hotels",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/hotels?latitude=40.7639&longitude=-73.98502349853516&limit=20&offset=40&term=italian",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"hotels"
+							],
+							"query": [
+								{
+									"key": "latitude",
+									"value": "40.7639"
+								},
+								{
+									"key": "longitude",
+									"value": "-73.98502349853516"
+								},
+								{
+									"key": "radius",
+									"value": "40000",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "offset",
+									"value": "40"
+								},
+								{
+									"key": "term",
+									"value": "italian"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/hotels/DoSU8IPq-Py_YV3kYmXPfQ",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"hotels",
+								"DoSU8IPq-Py_YV3kYmXPfQ"
+							],
+							"query": [
+								{
+									"key": "term",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Mails",
+			"item": [
+				{
+					"name": "Create List",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"type\": \"event\",\n    \"data\": {\n        \"eventId\": \"1\",\n        \"eventTitle\": \"Test\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/mails/list",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"mails",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Mail",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"emailAddress\": \"zsajjad93@gmail.com\",\n    \"listId\": \"100\",\n    \"attachQR\": true,\n    \"params\": {\n        \"userName\": \"Z S\",\n        \"userPhoneNumber\": \"\",\n        \"ticketNumber\": \"1234\",\n        \"eventId\": \"eventId\",\n        \"eventTitle\": \"Event Title\",\n        \"eventAddress\": \"\",\n        \"eventLatitude\": \"\",\n        \"eventLongitude\": \"\",\n        \"eventStartData\": \"\",\n        \"eventEndData\": \"\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/mails",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"mails"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Hangout Tags",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Hike\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/hangout-tags",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"hangout-tags"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Bulk",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7na\",\n        \"name\": \"Children's Theatre\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7n1\",\n        \"name\": \"Circus & Specialty Acts\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7nJ\",\n        \"name\": \"Classical\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7vAe1\",\n        \"name\": \"Comedy\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7nE\",\n        \"name\": \"Cultural\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7nI\",\n        \"name\": \"Dance\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7nt\",\n        \"name\": \"Espectaculo\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7nn\",\n        \"name\": \"Fashion\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7nl\",\n        \"name\": \"Fine Art\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7lv\",\n        \"name\": \"Magic & Illusion\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7le\",\n        \"name\": \"Miscellaneous\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7ld\",\n        \"name\": \"Miscellaneous Theatre\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7l7\",\n        \"name\": \"Multimedia\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7lA\",\n        \"name\": \"Music\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7lk\",\n        \"name\": \"Opera\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7l6\",\n        \"name\": \"Performance Art\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7lF\",\n        \"name\": \"Puppetry\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7la\",\n        \"name\": \"Spectacular\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7l1\",\n        \"name\": \"Theatre\"\n    },\n    {\n        \"categoryId\": \"art\",\n        \"order\": 1000,\n        \"providerId\": 2,\n        \"providerTagId\": \"KnvZfZ7v7lJ\",\n        \"name\": \"Variety\"\n    }\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/hangout-tags/bulk",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"hangout-tags",
+								"bulk"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/hangout-tags?limit=10&offset=0",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"hangout-tags"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Hike\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/hangout-tags/1",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"hangout-tags",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/hangout-tags/1",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"hangout-tags",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{authorization}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Hangouts",
+			"item": [
+				{
+					"name": "Upload",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/Users/mohammadzain/Desktop/Screenshot 2022-01-17 at 12.29.44 AM.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/hangouts/upload",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"hangouts",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Hike the bigger name with tags\",\n    \"startTime\": \"2022-01-16T00:11:56.534Z\",\n    \"endTime\": \"2022-01-16T04:11:56.534Z\",\n    \"status\": \"DRAFT\",\n    \"privacyLevel\": \"PUBLIC\",\n    \"tagIds\": [1, 2]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/hangouts",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"hangouts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"limit\": 10,\n    \"offset\": 0\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/hangouts/search",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"hangouts",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detail",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Hike\",\n    \"id\": 6\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/hangouts/6",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"hangouts",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Afghani\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/hangout-tags/1",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"hangout-tags",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/hangout-tags",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"hangout-tags"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{authorization}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Hangouts Invite",
+			"item": [
+				{
+					"name": "Per User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/friend-requests/sent?limit=10&offset=0",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"friend-requests",
+								"sent"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sent",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/friend-requests/sent?limit=10&offset=0",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"friend-requests",
+								"sent"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Received",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{SERVICE_URL}}/friend-requests/received?limit=10&offset=0",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"friend-requests",
+								"received"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "offset",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Accept",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"ACCEPTED\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/friend-requests/1",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"friend-requests",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reject",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"REJECTED\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/friend-requests/1",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"friend-requests",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/friend-requests/1",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"friend-requests",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"receiverId\": \"{{USER_ID_MAX}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{SERVICE_URL}}/friend-requests",
+							"host": [
+								"{{SERVICE_URL}}"
+							],
+							"path": [
+								"friend-requests"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{authorization}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "YELP_API_KEY",
+			"value": "_9IRA5Xs950kb2k6lnKEsiOQnUHY609_xM6E4uDoiznaGcaQiqvFoMBw7VXvkdZa24F-BUuFwcZTAjFO058HVDzQPV_wUOZJqyQkP690ZdXxCAv0oHJOX380tMJuYXYx"
+		},
+		{
+			"key": "SERVICE_URL",
+			"value": "http://localhost:3000"
+		},
+		{
+			"key": "SERVICE_URL",
+			"value": "https://hourlyconnect1.herokuapp.com",
+			"disabled": true
+		},
+		{
+			"key": "EVENTBRITE_TOKEN",
+			"value": "RFC5GFYSKKTIIXO5ABGF"
+		},
+		{
+			"key": "TICKET_MASTER_API_KEY",
+			"value": "7HZCF4w7XhedaZr2zSyorRK1lHvNHKBo"
+		},
+		{
+			"key": "GOOGLE_CLIENT_SECRET",
+			"value": "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"
+		},
+		{
+			"key": "GOOGLE_CLIENT_ID",
+			"value": "90287761300-0e45fj05cat12e4uefr4u8cifr5qdvd3.apps.googleusercontent.com"
+		},
+		{
+			"key": "FACEBOOK_APP_ID",
+			"value": "832218010789172"
+		},
+		{
+			"key": "FACEBOOK_APP_SECRET",
+			"value": "1b4aa465389cddf0938eb5d46ca0c2e5"
+		},
+		{
+			"key": "USER_ID_ZSAJJAD93",
+			"value": "ckw6pg88s0006d20mgav6ibrf"
+		},
+		{
+			"key": "USER_ID_MAX",
+			"value": "ckwpij2xa0002rj0mbhfpqa43"
+		}
+	]
+}

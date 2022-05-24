@@ -1,0 +1,490 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["mongodb","interactiveTransactions"]
+}
+
+// To Preserve the table created by PostGIS
+model SpatialRefSy {
+  srid      String  @id @default(auto()) @map("_id") @db.ObjectId
+  authName  String? @map("auth_name")
+  authSrid  Int?    @map("auth_srid")
+  proj4text String?
+  srtext    String?
+
+  @@map("spatial_ref_sys")
+}
+
+model Provider {
+  id        String        @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  order     Int
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @default(now()) @updatedAt
+  isActive  Boolean       @default(true)
+  tags      CategoryTag[]
+}
+
+model Category {
+  id                  String        @id @default(auto()) @map("_id") @db.ObjectId
+  name                String
+  order               Int
+  providerReferenceId String?
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @default(now()) @updatedAt
+  isActive            Boolean       @default(true)
+  tags                CategoryTag[]
+
+  @@index([id, name])
+}
+
+model CategoryTag {
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  order           Int
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @default(now()) @updatedAt
+  isActive        Boolean        @default(true)
+  providerTagId   String
+  providerTagType String?
+  category        Category?      @relation(fields: [categoryId], references: [id])
+  categoryId      String
+  provider        Provider       @relation(fields: [providerId], references: [id])
+  providerId      Int
+  userInterests   UserInterest[]
+
+  @@index([providerTagId])
+}
+
+enum AuthProviderType {
+  GOOGLE
+  FACEBOOK
+  INSTAGRAM
+  APPLE
+}
+
+model Account {
+  id                 String           @id @default(auto()) @map("_id") @db.ObjectId
+  userId             String
+  providerType       AuthProviderType
+  providerAccountId  String
+  refreshToken       String?
+  accessToken        String?
+  accessTokenExpires DateTime?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+ users              users             @relation(fields: [userId], references: [id])
+
+  @@unique([providerType, providerAccountId])
+}
+
+type LocationObjectType {
+  type       String       
+  coordinates  Int[]
+
+}
+
+type UserQuoteObject {
+  topicId        String
+  content        String
+  liked          String[]
+  disliked       String[]
+  isActive       Boolean
+}
+
+model users {
+  id                     String                @id @default(auto()) @map("_id") @db.ObjectId
+  firstName              String?
+  lastName               String?
+  password               String?
+  gender                 String?
+  sexualOrientation      String?
+  showMe                 String?
+  birthday               DateTime?
+  phoneNumber            String?
+  isPrivate              Boolean               @default(false)
+  isPhoneVerified        Boolean               @default(false)
+  isActive               Boolean               @default(true)
+  isPremium              Boolean               @default(false)
+  isBanned               Boolean               @default(false)
+  createdAt              DateTime              @default(now())
+  updatedAt              DateTime              @updatedAt
+  loc                    LocationObjectType?  
+  quote                  UserQuoteObject?     
+  accounts               Account[]
+  sessions               Session[]
+  interests              UserInterest[]
+  posts                  Post[]
+  liked                  UserProfileLike[]     @relation("liked")
+  likedBy                UserProfileLike[]
+  notifications          UserNotification[]
+  lastLocation           UserCurrentLocation?
+  locations              UserLocationHistory[]
+  friendRequestSent      FriendRequest[]       @relation("sender")
+  friendRequestReceived  FriendRequest[]       @relation("receiver")
+  addedFriends           Friendship[]          @relation("users")
+  addedByFriends         Friendship[]          @relation("friend")
+  blockedUser            Block[]               @relation("blocker")
+  blockedBy              Block[]               @relation("blocked")
+  profileViewedBy        UserProfileView[]     @relation("viewed")
+  viewedProfiles         UserProfileView[]     @relation("viewer")
+  devices                UserDevice[]
+  organizedHangouts      Hangout[]             @relation("organizer")
+  hangoutInvitesReceived HangoutInvite[]       @relation("invited")
+  hangoutInvitesSent     HangoutInvite[]       @relation("inviter")
+  refreshCount           RefreshCount[]        @relation("refresher")
+  author                 Quote[]                @relation("author")
+
+  @@index([id, loc])
+}
+
+model Session {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String
+  expires      DateTime
+  sessionToken String   @unique
+  accessToken  String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+ users        users     @relation(fields: [userId], references: [id])
+}
+
+model VerificationRequest {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, token])
+}
+
+model UserInterest {
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+ users         users         @relation(fields: [userId], references: [id])
+  userId        String
+  categoryTag   CategoryTag? @relation(fields: [categoryTagId], references: [id])
+  categoryTagId Int
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  isActive      Boolean      @default(true)
+
+  @@unique([userId, categoryTagId])
+  @@index([userId])
+}
+
+model Attachment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  url       String   @unique
+  ownerId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  isActive  Boolean  @default(true)
+  post      Post?    @relation(fields: [postId], references: [id])
+  postId    String?
+
+  @@index([ownerId])
+}
+
+enum PostPrivacyLevel {
+  PUBLIC
+  FRIENDS_ONLY
+  PRIVATE
+}
+
+model Post {
+  id           String           @id @default(auto()) @map("_id") @db.ObjectId
+  content      String
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @default(now()) @updatedAt
+  privacyLevel PostPrivacyLevel
+  isDeleted    Boolean          @default(false)
+  isPublished  Boolean          @default(true)
+  attachments  Attachment[]
+  owner       users            @relation(fields: [ownerId], references: [id])
+  ownerId      String
+
+  @@index([ownerId])
+}
+
+model UserCurrentLocation {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+ users     users     @relation(fields: [userId], references: [id])
+  userId    String   @unique
+  lat       Float
+  long      Float
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model UserLocationHistory {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+ users    users    @relation(fields: [userId], references: [id])
+  userId    String
+  lat       Float
+  long      Float
+  createdAt DateTime @default(now())
+}
+
+model UserProfileLike {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  likedBy  users    @relation(fields: [likedById], references: [id], name: "liked")
+  likedById String
+  liked    users    @relation(fields: [likedId], references: [id])
+  likedId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  isActive  Boolean  @default(true)
+
+  @@unique([likedId, likedById])
+  @@index([likedId])
+  @@index([likedById])
+}
+
+model UserProfileView {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+ users    users    @relation(fields: [userId], references: [id], name: "viewed")
+  userId    String
+  viewer   users    @relation(fields: [viewerId], references: [id], name: "viewer")
+  viewerId  String
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([viewerId])
+}
+
+enum UserNotificationType {
+  PROFILE_LIKE
+  EVENT_INVITE
+  EVENT_INVITE_ACCEPTED
+  EVENT_UPDATES
+  FRIEND_REQUEST_RECEIVED
+  FRIEND_REQUEST_ACCEPTED
+  HANGOUT_INVITE
+  HANGOUT_INVITE_ACCEPTED
+}
+
+model UserNotification {
+  id        String               @id @default(auto()) @map("_id") @db.ObjectId
+ users    users                @relation(fields: [userId], references: [id])
+  userId    String
+  type      UserNotificationType
+  content   String
+  meta      Json?
+  createdAt DateTime             @default(now())
+  isRead    Boolean              @default(false)
+  isActive  Boolean              @default(true)
+}
+
+enum UserDevicePlatform {
+  IOS
+  ANDROID
+  WEB
+}
+
+model UserDevice {
+  id        String             @id @default(auto()) @map("_id") @db.ObjectId
+ users    users              @relation(fields: [userId], references: [id])
+  userId    String
+  platform  UserDevicePlatform
+  fcmToken  String
+  uuid      String
+  isActive  Boolean            @default(true)
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @default(now()) @updatedAt
+
+  @@unique([userId, fcmToken, isActive])
+}
+
+enum FriendRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  WITHDRAWN
+}
+
+model FriendRequest {
+  id         String              @id @default(auto()) @map("_id") @db.ObjectId
+  sender    users               @relation(fields: [senderId], references: [id], name: "sender")
+  senderId   String
+  receiver  users               @relation(fields: [receiverId], references: [id], name: "receiver")
+  receiverId String
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @default(now()) @updatedAt
+  status     FriendRequestStatus @default(PENDING)
+  friendship Friendship?
+
+  @@unique([senderId, receiverId])
+  @@index([senderId])
+  @@index([receiverId])
+}
+
+model Friendship {
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+ users          users          @relation(fields: [userId], references: [id], name: "users")
+  userId          String
+  friend         users          @relation(fields: [friendId], references: [id], name: "friend")
+  friendId        String
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @default(now()) @updatedAt
+  isActive        Boolean        @default(true)
+  friendRequestId Int?           @unique // Just for logging purpose
+  friendRequest   FriendRequest? @relation(fields: [friendRequestId], references: [id])
+  removedById     String? // Just for logging purpose
+
+  @@unique([userId, friendId])
+  @@index([userId])
+  @@index([friendId])
+}
+
+model Block {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+ users        users    @relation(fields: [userId], references: [id], name: "blocker")
+  userId        String
+  blockedUser  users    @relation(fields: [blockedUserId], references: [id], name: "blocked")
+  blockedUserId String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now()) @updatedAt
+  isActive      Boolean  @default(true)
+
+  @@unique([userId, blockedUserId])
+  @@index([userId])
+  @@index([blockedUserId])
+}
+
+model RefreshCount {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+ users        users    @relation(fields: [userId], references: [id], name:"refresher")
+  userId        String
+  count         Int        
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now()) @updatedAt 
+
+  @@unique([userId])
+}
+
+model HangoutTag {
+  id        String         @id @default(auto()) @map("_id") @db.ObjectId
+  title     String         @unique
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @default(now()) @updatedAt
+  isActive  Boolean        @default(true)
+  hangouts  TagOnHangout[]
+}
+
+model TagOnHangout {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  tag       HangoutTag @relation(fields: [tagId], references: [id])
+  tagId     Int
+  hangout   Hangout    @relation(fields: [hangoutId], references: [id])
+  hangoutId Int
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now()) @updatedAt
+  isActive  Boolean    @default(true)
+
+  @@unique([tagId, hangoutId])
+  @@index([tagId])
+  @@index([hangoutId])
+}
+
+enum HangoutPrivacyLevel {
+  PUBLIC
+  FRIENDS_ONLY
+  PRIVATE
+}
+
+enum HangoutStatus {
+  DRAFT
+  PUBLISHED
+}
+
+model Hangout {
+  id                 String              @id @default(auto()) @map("_id") @db.ObjectId
+  name               String
+  description        String?
+  startTime          DateTime
+  endTime            DateTime
+  privacyLevel       HangoutPrivacyLevel @default(PUBLIC)
+  status             HangoutStatus       @default(DRAFT)
+  coverPhotoUrl      String?
+  onlineUrl          String?
+  tags               TagOnHangout[]
+  locationTitle      String?
+  locationAddress    String?
+  locationLat        Float?
+  locationLong       Float?
+  locationProvider   String?
+  locationProviderId String?
+  isLocationPrivate  Boolean?
+  organizer         users               @relation(fields: [organizerId], references: [id], name: "organizer")
+  organizerId        String
+  invites            HangoutInvite[]
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @default(now()) @updatedAt
+  isActive           Boolean             @default(true)
+}
+
+enum HangoutInviteStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  WITHDRAWN
+}
+
+model HangoutInvite {
+  id          String              @id @default(auto()) @map("_id") @db.ObjectId
+ users      users               @relation(fields: [userId], references: [id], name: "invited")
+  userId      String
+  hangout     Hangout             @relation(fields: [hangoutId], references: [id])
+  hangoutId   Int
+  invitedBy  users               @relation(fields: [invitedById], references: [id], name: "inviter")
+  invitedById String
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @default(now()) @updatedAt
+  status      HangoutInviteStatus @default(PENDING)
+
+  @@unique([userId, hangoutId])
+  @@index([userId])
+  @@index([hangoutId])
+}
+
+model Topic {
+   id         String              @id @default(auto()) @map("_id") @db.ObjectId
+  title       String              @unique()
+  content     String
+  endDate     DateTime  
+  quote       Quote[]            @relation("joinedTopic")          
+@@index([id])
+}
+
+model Quote {
+   id         String              @id @default(auto()) @map("_id") @db.ObjectId
+   topic      Topic            @relation(fields: [topicId], references:[id], name: "joinedTopic")
+   topicId    String
+   author    users             @relation(fields: [authorId], references:[id], "author")
+   authorId  String
+   content    String
+   reactions  QuoteReaction?     @relation(fields: [reactionId], references:[id], name: "userquote")
+   reactionId String?
+   isActive   Boolean?            @default(true)
+
+   @@unique([id, authorId])
+   @@index([authorId])
+}
+
+model QuoteReaction {
+   id         String              @id @default(auto()) @map("_id") @db.ObjectId
+   quoteId    String
+   liked      String[]
+   disliked    String[]
+   quote      Quote[]               @relation("userquote")
+   @@unique([id, quoteId])
+   @@index([quoteId])
+}
